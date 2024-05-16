@@ -1,10 +1,26 @@
 class BaseRepository {
+  constructor(model) {
+    this.model = model;
+  }
+
+  async findAll() {
+    return this.model.findAll();
+  }
+
   async findById(id) {
-    throw new Error("findById method must be implemented");
+    return this.model.findByPk(id);
   }
 
   async update(entity) {
-    throw new Error("update method must be implemented");
+    return entity.save();
+  }
+
+  async create(entity) {
+    return this.model.create(entity);
+  }
+
+  async delete(id) {
+    return this.model.destroy({ where: { id } });
   }
 }
 

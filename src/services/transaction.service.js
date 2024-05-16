@@ -1,4 +1,4 @@
-const BaseService = require("./baseService");
+const BaseService = require("./base.service");
 const transactionRepository = require("../repositories/transaction.repository");
 
 class TransactionService extends BaseService {
