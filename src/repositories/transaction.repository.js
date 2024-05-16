@@ -1,5 +1,5 @@
 const BaseRepository = require("./baseRepository");
-const Transaction = require("../models/Transaction");
+const Transaction = require("../models/transaction");
 
 class TransactionRepository extends BaseRepository {
   async findById(transactionId) {
