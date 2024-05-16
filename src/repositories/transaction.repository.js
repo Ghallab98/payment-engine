@@ -1,15 +1,9 @@
-const BaseRepository = require("./baseRepository");
-const Transaction = require("../models/transaction");
+const BaseRepository = require("./base.repository");
+const { transaction: Transaction } = require("../models");
 
 class TransactionRepository extends BaseRepository {
-  async findById(transactionId) {
-    const transaction = await Transaction.findByPk(transactionId);
-    return transaction;
-  }
-
-  async update(transaction) {
-    await transaction.save();
-    return transaction;
+  constructor() {
+    super(Transaction);
   }
 }
 
