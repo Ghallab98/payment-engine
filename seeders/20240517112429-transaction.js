@@ -2,21 +2,21 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert(
       "transactions",
       [
         {
           id: 1,
           amount: 1000,
-          status: "initiated",
+          status: "successful",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           id: 2,
           amount: 500,
-          status: "pending",
+          status: "declined",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -30,14 +30,7 @@ module.exports = {
         {
           id: 4,
           amount: 1500,
-          status: "denied",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 5,
-          amount: 2000,
-          status: "initiated",
+          status: "declined",
           createdAt: new Date(),
           updatedAt: new Date(),
           deletedAt: new Date(),
@@ -47,7 +40,7 @@ module.exports = {
     );
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete("transactions", null, {});
   },
 };
