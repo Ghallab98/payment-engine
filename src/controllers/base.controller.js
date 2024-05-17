@@ -1,4 +1,5 @@
 const catchAsync = require("../utils/catchAsync");
+const CustomError = require("../utils/CustomError");
 
 class BaseController {
   constructor(repository) {

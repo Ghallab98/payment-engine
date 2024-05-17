@@ -29,4 +29,5 @@ class PaymentGatewayService {
   }
 }
 
-module.exports = PaymentGatewayService;
+const paymentGatewayService = new PaymentGatewayService();
+module.exports = paymentGatewayService;

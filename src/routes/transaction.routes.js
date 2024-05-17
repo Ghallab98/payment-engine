@@ -1,16 +1,16 @@
 const express = require("express");
-const TransactionController = require("../controllers/transaction.controller");
+const transactionController = require("../controllers/transaction.controller");
 const router = express.Router();
 
 router
   .route("/")
-  .get(TransactionController.getAll)
-  .post(TransactionController.create);
+  .get(transactionController.getAll)
+  .post(transactionController.create);
 
 router
   .route("/:id")
-  .get(TransactionController.getById)
-  .patch(TransactionController.updateById)
-  .delete(TransactionController.delete);
+  .get(transactionController.getById)
+  .patch(transactionController.updateById)
+  .delete(transactionController.delete);
 
 module.exports = router;

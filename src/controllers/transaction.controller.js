@@ -1,10 +1,11 @@
 const BaseController = require("./base.controller");
 const transactionRepository = require("../repositories/transaction.repository");
-const TransactionService = require("../services/transaction.service");
+const transactionService = require("../services/transaction.service");
 
 class TransactionController extends BaseController {
   constructor() {
     super(transactionRepository);
+    this.service = transactionService;
   }
 }
 

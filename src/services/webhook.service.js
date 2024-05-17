@@ -1,19 +1,19 @@
+const transactionService = require("./transaction.service");
 class WebhookService {
   constructor() {
-    this.subscribers = [];
+    this.transactionService = transactionService;
   }
 
-  // Subscribe to webhook events
-  subscribe(callback) {
-    this.subscribers.push(callback);
-  }
+  async handlePaymentEvent(paymentEvent) {
+    const { transactionId, status } = paymentEvent;
 
-  // Notify subscribers of an event
-  notify(eventData) {
-    this.subscribers.forEach((subscriber) => {
-      subscriber(eventData);
-    });
+    await this.transactionService.updateTransactionStatus(
+      transactionId,
+      status
+    );
+    console.log(`Transaction ${transactionId} updated with status: ${status}`);
   }
 }
 
-module.exports = WebhookService;
+const webhookService = new WebhookService();
+module.exports = webhookService;
