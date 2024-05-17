@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run your app
-CMD npx sequelize-cli db:migrate && npm start
+CMD npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm start
