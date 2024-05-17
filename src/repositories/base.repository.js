@@ -11,7 +11,12 @@ class BaseRepository {
     return this.model.findByPk(id);
   }
 
-  async update(entity) {
+  async updateById(id, data) {
+    const entity = await this.findById(id);
+    const keys = Object.keys(data);
+    keys.forEach((key) => {
+      entity[key] = data[key];
+    });
     return entity.save();
   }
 

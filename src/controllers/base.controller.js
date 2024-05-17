@@ -21,8 +21,8 @@ class BaseController {
     res.status(201).json(record);
   });
 
-  update = catchAsync(async (req, res) => {
-    const record = await this.repository.update(req.params.id, req.body);
+  updateById = catchAsync(async (req, res) => {
+    const record = await this.repository.updateById(req.params.id, req.body);
     if (!record) return res.status(404).send("No record found");
     res.json(record);
   });
