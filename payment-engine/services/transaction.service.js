@@ -1,12 +1,31 @@
 const transactionRepository = require("../repositories/transaction.repository");
 const CustomError = require("../utils/CustomError");
+const retry = require("async-retry");
 
 class TransactionService {
   constructor(repository) {
     this.repository = repository;
   }
 
-  async updateTransactionStatus(transactionId, newStatus) {
+  create = async (body) => {
+    const { transaction } = body;
+
+    this.repository.create(transaction);
+    const { amount, id: transactionId } = transaction;
+
+    if (!result.success) {
+      await this.updateTransactionStatus(transactionId, "declined");
+      throw new CustomError({
+        message: result.message,
+        status: 400,
+      });
+    } else {
+      await this.updateTransactionStatus(transactionId, "success");
+    }
+    return transaction;
+  };
+
+  updateTransactionStatus = async (transactionId, newStatus) => {
     let transaction;
     await retry(
       async () => {
@@ -33,7 +52,7 @@ class TransactionService {
       }
     );
     return transaction;
-  }
+  };
 }
 
 const transactionService = new TransactionService(transactionRepository);

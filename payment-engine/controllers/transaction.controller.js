@@ -3,10 +3,13 @@ const transactionRepository = require("../repositories/transaction.repository");
 const transactionService = require("../services/transaction.service");
 
 class TransactionController extends BaseController {
-  constructor() {
+  constructor(transactionRepository, transactionService) {
     super(transactionRepository);
     this.service = transactionService;
   }
 }
 
-module.exports = new TransactionController();
+module.exports = new TransactionController(
+  transactionRepository,
+  transactionService
+);

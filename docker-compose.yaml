@@ -1,19 +1,25 @@
 version: "3.8"
 services:
+  payment-gateway:
+    build: .
+    depends_on:
+      - app
+    env_file:
+      - .env
+    environment:
+      WEBHOOK_HOST: app
   app:
     build: .
     ports:
       - "3000:3000"
     depends_on:
       - postgres
+      - payment-gateway
     env_file:
       - .env
     environment:
       DB_HOSTNAME: postgres
-      DB_PORT: $DB_PORT
-      DB_NAME: $DB_NAME
-      DB_USERNAME: $DB_USERNAME
-      DB_PASSWORD: $DB_PASSWORD
+      PAYMENT_HOST: payment-gateway
   postgres:
     image: postgres:14.11
     env_file:
@@ -23,7 +29,7 @@ services:
       POSTGRES_USER: $DB_USERNAME
       POSTGRES_PASSWORD: $DB_PASSWORD
     ports:
-      - "5433:5432"
+      - "5433:5432" # I USED 5433 TO AVOID CONFLICT WITH LOCAL POSTGRES
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 volumes:

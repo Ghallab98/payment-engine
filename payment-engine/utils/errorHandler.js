@@ -1,4 +1,4 @@
-const { winstonError } = require("../../config/winston");
+const { winstonError } = require("../config/winston");
 function errorHandler(err, req, res, next) {
   const { status = 500, message = "Internal server error" } = err;
   const errorDetails = {

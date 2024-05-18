@@ -1,10 +1,10 @@
 const transactionService = require("./transaction.service");
 class WebhookService {
-  constructor() {
+  constructor(transactionService) {
     this.transactionService = transactionService;
   }
 
-  async handlePaymentEvent(paymentEvent) {
+  handlePaymentEvent = async (paymentEvent) => {
     const { transactionId, status } = paymentEvent;
 
     await this.transactionService.updateTransactionStatus(
@@ -12,8 +12,8 @@ class WebhookService {
       status
     );
     console.log(`Transaction ${transactionId} updated with status: ${status}`);
-  }
+  };
 }
 
-const webhookService = new WebhookService();
+const webhookService = new WebhookService(transactionService);
 module.exports = webhookService;

@@ -2,7 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const webhookService = require("../services/webhook.service");
 
 class WebhookController {
-  constructor() {
+  constructor(webhookService) {
     this.service = webhookService;
   }
   handlePaymentEvent = catchAsync(async (req, res) => {
@@ -11,4 +11,4 @@ class WebhookController {
   });
 }
 
-module.exports = new WebhookController();
+module.exports = new WebhookController(webhookService);
