@@ -1,6 +1,6 @@
 const config = require("../config/config");
 const retry = require("../common/utils/retry");
-const fetch = require("node-fetch");
+const got = require("got");
 class PaymentClientService {
   constructor(url) {
     this.url = url;
@@ -12,7 +12,7 @@ class PaymentClientService {
         ...paymentRequest,
         apiKey,
       };
-      const paymentResult = await fetch(this.url, {
+      const paymentResult = await got(this.url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -16,13 +16,12 @@ class TransactionService extends BaseService {
       amount: createdTransaction.amount,
     };
     const result = await paymentClientService.initiatePayment(payload);
-
-    if (result.status === 200)
+    if (result.statusCode === 200)
       await this.updateTransactionStatus(createdTransaction.id, "pending");
     else {
       await this.updateTransactionStatus(createdTransaction.id, "declined");
       throw new CustomError({
-        message: result.message,
+        message: "Payment failed",
         status: 400,
       });
     }

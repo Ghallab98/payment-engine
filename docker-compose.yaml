@@ -1,15 +1,13 @@
 version: "3.8"
 services:
   payment-gateway:
-    build: .
-    depends_on:
-      - app
+    build: ./payment-gateway
     env_file:
       - .env
     environment:
       WEBHOOK_HOST: app
   app:
-    build: .
+    build: ./payment-engine
     ports:
       - "3000:3000"
     depends_on:

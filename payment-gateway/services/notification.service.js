@@ -1,6 +1,6 @@
 const retry = require("../common/utils/retry");
 const config = require("../config/config");
-const fetch = require("node-fetch");
+const got = require("got");
 class NotificationService {
   constructor(url) {
     this.url = url;
@@ -8,7 +8,7 @@ class NotificationService {
 
   sendTransactionStatus = async (payload) => {
     await retry(async () => {
-      await fetch(this.url, {
+      await got(this.url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
