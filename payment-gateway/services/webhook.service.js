@@ -1,5 +1,5 @@
 const retry = require("async-retry");
-
+const config = require("../config/config");
 class WebhookService {
   constructor(url) {
     this.url = url;
@@ -31,5 +31,5 @@ class WebhookService {
 }
 
 module.exports = new WebhookService(
-  `http://${process.env.WEBHOOK_HOST}:${process.env.WEBHOOK_PORT}/webhook/payment`
+  `http://${config.WEBHOOK_HOST}:${config.WEBHOOK_PORT}/webhook/payment`
 );

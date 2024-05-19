@@ -2,6 +2,7 @@ const { body } = require("express-validator");
 const { PAYMENT_GATEWAYS } = require("../../../constants");
 const CustomError = require("../../exceptions/CustomError");
 const validation = require("../validation");
+const config = require("../../config/config");
 
 class PaymentValidator {
   processPayment = validation([
@@ -25,7 +26,7 @@ class PaymentValidator {
       .withMessage("Please provide an apiKey")
       .custom((value, { req }) => {
         const gateway = req.body.gateway;
-        const apiKeyEnv = process.env[`API_KEY_${gateway.toUpperCase()}`];
+        const apiKeyEnv = config[`API_KEY_${gateway.toUpperCase()}`];
         if (value !== apiKeyEnv) {
           throw new CustomError({ status: 401, message: "Invalid API key" });
         }

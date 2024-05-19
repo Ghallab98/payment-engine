@@ -2,6 +2,7 @@ const BaseService = require("./base.service");
 const transactionRepository = require("../repositories/transaction.repository");
 const CustomError = require("../common/exceptions/CustomError");
 const retry = require("../common/utils/retry");
+const config = require("../config/config");
 class TransactionService extends BaseService {
   constructor(repository) {
     this.repository = repository;
@@ -13,8 +14,7 @@ class TransactionService extends BaseService {
     const payload = {
       transactionId: createdTransaction.id,
       gateway: createdTransaction.gateway,
-      apiKey:
-        process.env[`API_KEY_${createdTransaction.gateway.toUpperCase()}`],
+      apiKey: config[`API_KEY_${createdTransaction.gateway.toUpperCase()}`],
     };
     const result = await retry(async () => {
       const paymentResult = await fetch(this.url, {

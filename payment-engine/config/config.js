@@ -17,8 +17,7 @@ const databaseParams =
         port: process.env.DB_PORT,
       };
 
-module.exports = {
-  ...databaseParams,
+const sequelizeConfig = {
   dialect: "postgres",
   operatorsAliases: "0",
   define: {
@@ -26,4 +25,13 @@ module.exports = {
     underscored: true,
   },
   logging: process.env.DB_LOGGING == "true",
+};
+module.exports = {
+  ...databaseParams,
+  sequelizeConfig,
+  NODE_ENV: process.env.NODE_ENV.trim(),
+  PORT: process.env.PORT,
+  API_VERSION: process.env.API_VERSION,
+  API_KEY_STRIPE: process.env.API_KEY_STRIPE,
+  API_KEY_PAYPAL: process.env.API_KEY_PAYPAL,
 };
