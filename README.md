@@ -10,7 +10,7 @@ This project implements a payment engine for processing transaction statuses in 
 - [Non-Functional Requirements](#non-functional-requirements)
 - [Technologies Used](#technologies-used)
 - [Database Schema](#database-schema)
-- [System Design And API Endpoints](#system-design-and-api-endpoints)
+- [System Design and State Transition Workflows](#system-design-and-state-transition-workflows)
 - [Running the Application](#running-the-application)
 - [Usage](#usage)
 - [Testing](#testing)
@@ -63,9 +63,13 @@ This project implements a payment engine for processing transaction statuses in 
 | status      | STRING    | The status of the transaction |
 | gateway     | STRING    | The used payment gateway      |
 
-### System Design
+### System Design and State Transition Workflows
+
+#### System Design
 
 ![Project Structure](docs/Project_structure.png)
+
+#### State Transition Workflows
 
 ![State Transition Workflows](docs/State_transition.png)
 
