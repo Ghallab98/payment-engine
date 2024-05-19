@@ -1,6 +1,6 @@
 const retry = require("../common/utils/retry");
 const config = require("../config/config");
-class WebhookService {
+class NotificationService {
   constructor(url) {
     this.url = url;
   }
@@ -18,6 +18,6 @@ class WebhookService {
   };
 }
 
-module.exports = new WebhookService(
+module.exports = new NotificationService(
   `http://${config.WEBHOOK_HOST}:${config.WEBHOOK_PORT}/webhook/payment`
 );

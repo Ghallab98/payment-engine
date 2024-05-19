@@ -1,8 +1,8 @@
-const webhookService = require("./webhook.service");
+const notificationService = require("./notification.service");
 
 class PaymentService {
-  constructor(webhookService) {
-    this.webhookService = webhookService;
+  constructor(notificationService) {
+    this.notificationService = notificationService;
   }
 
   generateStatus = () => (Math.random() < 0.5 ? "successful" : "declined");
@@ -16,8 +16,8 @@ class PaymentService {
       status,
     };
 
-    return this.webhookService.sendTransactionStatus(payload);
+    return this.notificationService.sendTransactionStatus(payload);
   };
 }
 
-module.exports = new PaymentService(webhookService);
+module.exports = new PaymentService(notificationService);
