@@ -1,15 +1,18 @@
 const catchAsync = require("../common/utils/catchAsync");
-const paymentService = require("../services/payment.service");
-
+const stripeService = require("../services/stripe.service");
+const paypalService = require("../services/paypal.service");
 class PaymentController {
-  constructor(paymentService) {
-    this.paymentService = paymentService;
+  constructor() {
+    this.paymentServices = {
+      stripe: stripeService,
+      paypal: paypalService,
+    };
   }
 
   processPayment = catchAsync(async (req, res) => {
-    this.paymentService.processPayment(req.body);
+    this.paymentServices[req.body.gateway].processPayment(req.body);
     res.status(200).json({ message: "Payment in progress" });
   });
 }
 
-module.exports = new PaymentController(paymentService);
+module.exports = new PaymentController();
