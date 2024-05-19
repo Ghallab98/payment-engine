@@ -2,14 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const errorHandler = require("./common/middlewares/errorHandler");
-const morgan = require("morgan");
-const { winstonInfo } = require("./config/winston");
+const logger = require("./common/utils/Logger");
 const paymentRouter = require("./routes/payment.routes");
 
 const app = express();
 const port = process.env.PAYMENT_PORT || 3030;
 
-app.use(morgan("combined", { stream: winstonInfo.stream }));
+app.use(logger.infoLogger);
 
 app.use(bodyParser.json());
 

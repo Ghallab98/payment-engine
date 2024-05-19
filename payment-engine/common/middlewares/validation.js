@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { winstonError } = require("../../config/winston");
+const logger = require("../utils/Logger");
 
 module.exports = (checks) => [
   ...checks,
@@ -11,7 +11,7 @@ module.exports = (checks) => [
       if (errors[0].msg.hasOwnProperty("en"))
         errors[0].msg = errors[0].msg[req.headers.locale];
       console.log(errors);
-      winstonError.error(
+      logger.errorLogger.error(
         `422 - ${JSON.stringify(errors)} - Body: ${JSON.stringify(
           req.body
         )} - ${req.originalUrl} - ${req.method} - ${req.ip}`

@@ -1,16 +1,15 @@
 require("dotenv").config();
 const express = require("express");
-const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const errorHandler = require("./utils/errorHandler");
-const { winstonInfo } = require("./config/winston");
+const errorHandler = require("./common/middlewares/errorHandler");
+const logger = require("./common/utils/Logger");
 const transactionsRouter = require("./routes/transaction.routes");
 const webhookRouter = require("./routes/webhook.routes");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(morgan("combined", { stream: winstonInfo.stream }));
+app.use(logger.infoLogger);
 
 app.use(bodyParser.json());
 
