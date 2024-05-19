@@ -1,26 +1,40 @@
+const BaseService = require("./base.service");
 const transactionRepository = require("../repositories/transaction.repository");
 const CustomError = require("../utils/CustomError");
-const retry = require("async-retry");
-
-class TransactionService {
+const retry = require("../utils/retry");
+class TransactionService extends BaseService {
   constructor(repository) {
     this.repository = repository;
   }
 
-  create = async (body) => {
-    const { transaction } = body;
+  create = async (transaction) => {
+    const createdTransaction = await this.repository.create(transaction);
 
-    this.repository.create(transaction);
-    const { amount, id: transactionId } = transaction;
+    const payload = {
+      transactionId: createdTransaction.id,
+      gateway: createdTransaction.gateway,
+      apiKey:
+        process.env[`API_KEY_${createdTransaction.gateway.toUpperCase()}`],
+    };
+    const result = await retry(async () => {
+      const paymentResult = await fetch(this.url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      return paymentResult.json();
+    });
 
-    if (!result.success) {
-      await this.updateTransactionStatus(transactionId, "declined");
+    if (result.status === 200)
+      await this.updateTransactionStatus(transaction.id, "pending");
+    else {
+      await this.updateTransactionStatus(transaction.id, "declined");
       throw new CustomError({
         message: result.message,
         status: 400,
       });
-    } else {
-      await this.updateTransactionStatus(transactionId, "success");
     }
     return transaction;
   };
