@@ -1,5 +1,6 @@
 const retry = require("../common/utils/retry");
 const config = require("../config/config");
+const fetch = require("node-fetch");
 class NotificationService {
   constructor(url) {
     this.url = url;
@@ -19,5 +20,5 @@ class NotificationService {
 }
 
 module.exports = new NotificationService(
-  `http://${config.WEBHOOK_HOST}:${config.WEBHOOK_PORT}/webhook/payment`
+  `http://${config.WEBHOOK_HOST}:${config.WEBHOOK_PORT}/v1/webhook/payment`
 );

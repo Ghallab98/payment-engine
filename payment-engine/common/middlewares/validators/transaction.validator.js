@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 const { PAYMENT_GATEWAYS } = require("../../../constants");
 const validation = require("../validation");
 
-class PaymentValidator {
+class TransactionValidator {
   create = validation([
     body("amount")
       .exists()
@@ -17,4 +17,4 @@ class PaymentValidator {
   ]);
 }
 
-module.exports = new PaymentValidator();
+module.exports = new TransactionValidator();

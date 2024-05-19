@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 const { PAYMENT_GATEWAYS } = require("../../../constants");
 const CustomError = require("../../exceptions/CustomError");
 const validation = require("../validation");
-const config = require("../../config/config");
+const config = require("../../../config/config");
 
 class PaymentValidator {
   processPayment = validation([

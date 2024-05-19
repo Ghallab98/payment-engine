@@ -28,10 +28,13 @@ const sequelizeConfig = {
 };
 module.exports = {
   ...databaseParams,
-  sequelizeConfig,
+  ...sequelizeConfig,
   NODE_ENV: process.env.NODE_ENV.trim(),
   PORT: process.env.PORT,
   API_VERSION: process.env.API_VERSION,
   API_KEY_STRIPE: process.env.API_KEY_STRIPE,
   API_KEY_PAYPAL: process.env.API_KEY_PAYPAL,
+  PAYMENT_HOST: process.env.PAYMENT_HOST,
+  PAYMENT_PORT: process.env.PAYMENT_PORT,
+  PAYMENT_API_VERSION: process.env.PAYMENT_API_VERSION,
 };

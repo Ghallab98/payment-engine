@@ -10,7 +10,6 @@ module.exports = (checks) => [
       errors = errors.array({ onlyFirstError: true });
       if (errors[0].msg.hasOwnProperty("en"))
         errors[0].msg = errors[0].msg[req.headers.locale];
-      console.log(errors);
       logger.errorLogger.error(
         `422 - ${JSON.stringify(errors)} - Body: ${JSON.stringify(
           req.body

@@ -11,7 +11,6 @@ class WebhookService {
       transactionId,
       status
     );
-    console.log(`Transaction ${transactionId} updated with status: ${status}`);
   };
 }
 

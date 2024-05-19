@@ -4,7 +4,7 @@ const transactionRepository = require("../repositories/transaction.repository");
 const CustomError = require("../common/exceptions/CustomError");
 class TransactionService extends BaseService {
   constructor(repository) {
-    this.repository = repository;
+    super(repository);
   }
 
   create = async (transaction) => {
@@ -18,15 +18,15 @@ class TransactionService extends BaseService {
     const result = await paymentClientService.initiatePayment(payload);
 
     if (result.status === 200)
-      await this.updateTransactionStatus(transaction.id, "pending");
+      await this.updateTransactionStatus(createdTransaction.id, "pending");
     else {
-      await this.updateTransactionStatus(transaction.id, "declined");
+      await this.updateTransactionStatus(createdTransaction.id, "declined");
       throw new CustomError({
         message: result.message,
         status: 400,
       });
     }
-    return transaction;
+    return createdTransaction;
   };
 
   updateTransactionStatus = async (transactionId, newStatus) => {
@@ -39,8 +39,7 @@ class TransactionService extends BaseService {
     }
 
     transaction.status = newStatus;
-    await this.repository.update(transaction);
-    return transaction;
+    return transaction.save();
   };
 }
 
