@@ -8,7 +8,7 @@ class TransactionService extends BaseService {
   }
 
   create = async (transaction) => {
-    const createdTransaction = await this.repository.create(transaction);
+    let createdTransaction = await this.repository.create(transaction);
 
     const payload = {
       transactionId: createdTransaction.id,
@@ -17,7 +17,10 @@ class TransactionService extends BaseService {
     };
     const result = await paymentClientService.initiatePayment(payload);
     if (result.statusCode === 200)
-      await this.updateTransactionStatus(createdTransaction.id, "pending");
+      createdTransaction = await this.updateTransactionStatus(
+        createdTransaction.id,
+        "pending"
+      );
     else {
       await this.updateTransactionStatus(createdTransaction.id, "declined");
       throw new CustomError({

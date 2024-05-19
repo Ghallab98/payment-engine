@@ -1,51 +1,59 @@
-const TransactionService = require("../src/services/transactionService");
+const transactionService = require("../services/transaction.service");
+const paymentClientService = require("../services/paymentClient.service");
+const transactionRepository = require("../repositories/transaction.repository");
+const CustomError = require("../common/exceptions/CustomError");
 
-// Mock TransactionRepository
-const mockTransactionRepository = {
-  findById: jest.fn(),
-  update: jest.fn(),
-};
-
-const transactionService = new TransactionService(mockTransactionRepository);
+jest.mock("../services/paymentClient.service");
 
 describe("TransactionService", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
-  describe("updateTransactionStatus", () => {
-    it("should update transaction status", async () => {
-      mockTransactionRepository.findById.mockResolvedValueOnce({
-        id: 1,
-        status: "initiated",
-      });
+  it("should create a transaction and initiate payment", async () => {
+    const transaction = { gateway: "stripe", amount: 100 };
+    paymentClientService.initiatePayment.mockResolvedValue({ statusCode: 200 });
 
-      mockTransactionRepository.update.mockResolvedValueOnce({
-        id: 1,
-        status: "pending",
-      });
+    const result = await transactionService.create(transaction);
 
-      const updatedTransaction =
-        await transactionService.updateTransactionStatus(1, "pending");
-      expect(updatedTransaction.id).toBe(1);
-      expect(updatedTransaction.status).toBe("pending");
+    expect(result).toMatchObject({ ...transaction, status: "pending" });
+    expect(paymentClientService.initiatePayment).toHaveBeenCalledWith({
+      transactionId: result.id,
+      gateway: result.gateway,
+      amount: result.amount,
+    });
+  });
 
-      expect(mockTransactionRepository.findById).toHaveBeenCalledWith(1);
-      expect(mockTransactionRepository.update).toHaveBeenCalledWith({
-        id: 1,
-        status: "pending",
-      });
+  it("should throw an error if payment initiation fails", async () => {
+    const transaction = { gateway: "stripe", amount: 100 };
+    paymentClientService.initiatePayment.mockResolvedValue({ statusCode: 400 });
+
+    await expect(transactionService.create(transaction)).rejects.toThrow(
+      CustomError
+    );
+  });
+
+  it("should update transaction status", async () => {
+    const transaction = await transactionRepository.create({
+      amount: 100,
+      status: "initiated",
+      gateway: "stripe",
     });
 
-    it("should throw error if transaction is not found", async () => {
-      mockTransactionRepository.findById.mockResolvedValueOnce(null);
+    await transactionService.updateTransactionStatus(
+      transaction.id,
+      "successful"
+    );
 
-      await expect(
-        transactionService.updateTransactionStatus(1, "pending")
-      ).rejects.toThrow("Transaction not found");
+    const updatedTransaction = await transactionRepository.findById(
+      transaction.id
+    );
+    expect(updatedTransaction.status).toBe("successful");
+  });
 
-      expect(mockTransactionRepository.findById).toHaveBeenCalledWith(1);
-      expect(mockTransactionRepository.update).not.toHaveBeenCalled();
-    });
+  it("should throw an error if transaction not found when updating status", async () => {
+    await expect(
+      transactionService.updateTransactionStatus(999, "successful")
+    ).rejects.toThrow(CustomError);
   });
 });

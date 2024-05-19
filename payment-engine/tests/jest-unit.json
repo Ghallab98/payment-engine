@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "testTimeout": 180000,
+  "collectCoverage": true,
+  "coverageReporters": ["json", "html"],
+  "rootDir": "./",
+  "globalSetup": "./utils/initializeTestDB.js"
+}

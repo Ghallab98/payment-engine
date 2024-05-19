@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "set NODE_ENV=development && nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "test": "cross-env NODE_ENV=test jest --coverage --config ./tests/jest-unit.json"
   },
   "author": "Mohamed Ghallab",
   "license": "ISC",
@@ -23,6 +23,10 @@
     "pg": "^8.11.5",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
+    "umzug": "^2.3.0",
     "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
