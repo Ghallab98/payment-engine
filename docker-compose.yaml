@@ -17,6 +17,7 @@ services:
       - .env
     environment:
       DB_HOSTNAME: postgres
+      TEST_DB_HOSTNAME: postgres
       PAYMENT_HOST: payment-gateway
   postgres:
     image: postgres:14.11
