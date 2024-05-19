@@ -1,4 +1,3 @@
-const constants = require("../constants");
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("transactions", {
@@ -17,7 +16,7 @@ module.exports = {
         defaultValue: "initiated",
       },
       gateway: {
-        type: Sequelize.ENUM(...constants.PAYMENT_GATEWAYS),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {

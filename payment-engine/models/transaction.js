@@ -1,5 +1,4 @@
 const { Model } = require("sequelize");
-const constants = require("../constants");
 module.exports = (sequelize, DataTypes) => {
   class transaction extends Model {
     /**
@@ -28,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "initiated",
       },
       gateway: {
-        type: DataTypes.ENUM(...constants.PAYMENT_GATEWAYS),
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
