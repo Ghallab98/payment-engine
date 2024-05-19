@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const errorHandler = require("./middlewares/errorHandler");
+const errorHandler = require("./common/middlewares/errorHandler");
 const morgan = require("morgan");
 const { winstonInfo } = require("./config/winston");
 const paymentRouter = require("./routes/payment.routes");

@@ -1,4 +1,4 @@
-const catchAsync = require("../utils/catchAsync");
+const catchAsync = require("../common/utils/catchAsync");
 const webhookService = require("../services/webhook.service");
 
 class WebhookController {

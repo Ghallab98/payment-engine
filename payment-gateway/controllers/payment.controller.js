@@ -1,4 +1,4 @@
-const catchAsync = require("../utils/catchAsync");
+const catchAsync = require("../common/utils/catchAsync");
 const paymentService = require("../services/payment.service");
 
 class PaymentController {

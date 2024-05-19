@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const { winstonError } = require("../config/winston");
+const { winstonError } = require("../../config/winston");
 
 module.exports = (checks) => [
   ...checks,

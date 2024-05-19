@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
-const { PAYMENT_GATEWAYS } = require("../../constants");
-const CustomError = require("../../utils/CustomError");
+const { PAYMENT_GATEWAYS } = require("../../../constants");
+const CustomError = require("../../exceptions/CustomError");
 const validation = require("../validation");
 
 class PaymentValidator {

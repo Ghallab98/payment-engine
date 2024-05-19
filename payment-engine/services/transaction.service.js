@@ -1,7 +1,7 @@
 const BaseService = require("./base.service");
 const transactionRepository = require("../repositories/transaction.repository");
-const CustomError = require("../utils/CustomError");
-const retry = require("../utils/retry");
+const CustomError = require("../common/exceptions/CustomError");
+const retry = require("../common/utils/retry");
 class TransactionService extends BaseService {
   constructor(repository) {
     this.repository = repository;
