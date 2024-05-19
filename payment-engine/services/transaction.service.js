@@ -1,8 +1,7 @@
 const BaseService = require("./base.service");
+const paymentClientService = require("./paymentClient.service");
 const transactionRepository = require("../repositories/transaction.repository");
 const CustomError = require("../common/exceptions/CustomError");
-const retry = require("../common/utils/retry");
-const config = require("../config/config");
 class TransactionService extends BaseService {
   constructor(repository) {
     this.repository = repository;
@@ -14,18 +13,9 @@ class TransactionService extends BaseService {
     const payload = {
       transactionId: createdTransaction.id,
       gateway: createdTransaction.gateway,
-      apiKey: config[`API_KEY_${createdTransaction.gateway.toUpperCase()}`],
+      amount: createdTransaction.amount,
     };
-    const result = await retry(async () => {
-      const paymentResult = await fetch(this.url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      return paymentResult.json();
-    });
+    const result = await paymentClientService.initiatePayment(payload);
 
     if (result.status === 200)
       await this.updateTransactionStatus(transaction.id, "pending");
@@ -40,31 +30,16 @@ class TransactionService extends BaseService {
   };
 
   updateTransactionStatus = async (transactionId, newStatus) => {
-    let transaction;
-    await retry(
-      async () => {
-        transaction = await this.repository.findById(transactionId);
-        if (!transaction) {
-          throw new CustomError({
-            message: "Transaction not found",
-            status: 404,
-          });
-        }
+    const transaction = await this.repository.findById(transactionId);
+    if (!transaction) {
+      throw new CustomError({
+        message: "Transaction not found",
+        status: 404,
+      });
+    }
 
-        transaction.status = newStatus;
-        await this.repository.update(transaction);
-      },
-      {
-        retries: 3,
-        factor: 2,
-        minTimeout: 1000,
-        maxTimeout: 5000,
-        randomize: true,
-        onRetry: (error, i) => {
-          console.warn(`Retrying ${i + 1} time due to: ${error.message}`);
-        },
-      }
-    );
+    transaction.status = newStatus;
+    await this.repository.update(transaction);
     return transaction;
   };
 }
