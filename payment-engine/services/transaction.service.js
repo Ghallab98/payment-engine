@@ -1,7 +1,7 @@
 const BaseService = require("./base.service");
 const paymentClientService = require("./paymentClient.service");
 const transactionRepository = require("../repositories/transaction.repository");
-const CustomError = require("../common/exceptions/CustomError");
+const BadRequestError = require("../common/exceptions/BadRequestError");
 class TransactionService extends BaseService {
   constructor(repository) {
     super(repository);
@@ -23,10 +23,7 @@ class TransactionService extends BaseService {
       );
     else {
       await this.updateTransactionStatus(createdTransaction.id, "declined");
-      throw new CustomError({
-        message: "Payment failed",
-        status: 400,
-      });
+      throw new BadRequestError("Payment failed");
     }
     return createdTransaction;
   };
